@@ -1,4 +1,4 @@
-# Kunlik Navbat
+# 100 kun
 
 100 kunlik challenge uchun shaxsiy odatlar trekkeri. PWA: brauzerda ishlaydi, kompyuter va telefonga alohida ilova sifatida o'rnatiladi, internetsiz ham ishlaydi. Ma'lumotlar faqat qurilmada (IndexedDB) saqlanadi — server kerak emas.
 
@@ -48,7 +48,7 @@ Vercel'da repozitoriyni import qiling (Framework: Vite, Build: `npm run build`, 
 ## 4. Windows'ga ilova sifatida o'rnatish
 
 1. Joylangan manzilni **Chrome** yoki **Edge** da oching.
-2. Manzil qatorining o'ng tomonidagi **o'rnatish** belgisini bosing (yoki menyu → *Ilovani o'rnatish* / *Install Kunlik Navbat*). Ilova ichidagi **“Ilovani o'rnatish”** tugmasi ham xuddi shuni qiladi.
+2. Manzil qatorining o'ng tomonidagi **o'rnatish** belgisini bosing (yoki menyu → *Ilovani o'rnatish* / *Install 100 kun*). Ilova ichidagi **“Ilovani o'rnatish”** tugmasi ham xuddi shuni qiladi.
 3. Ilova o'z oynasida, o'z ikonkasi bilan ochiladi; Start menyusi va vazifalar panelidan ishga tushirsa bo'ladi.
 
 Telefonda: Android (Chrome) — menyu → *Ilovani o'rnatish*; iPhone (Safari) — Ulashish → *Bosh ekranga qo'shish*.

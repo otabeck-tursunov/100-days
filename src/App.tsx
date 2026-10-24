@@ -70,7 +70,7 @@ function Shell() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <div className="flex items-center gap-2.5 font-semibold tracking-tight">
             <img src={import.meta.env.BASE_URL + 'favicon.svg'} alt="" className="size-7" />
-            Kunlik Navbat
+            100 kun
           </div>
           <nav className="hidden gap-1 md:flex" aria-label="Asosiy">
             {TABS.map((t, i) => (

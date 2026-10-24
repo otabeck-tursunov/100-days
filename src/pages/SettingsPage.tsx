@@ -146,7 +146,7 @@ export function SettingsPage() {
             <input type="time" className="input !w-32" value={s.eveningTime} onChange={(e) => e.target.value && updateSettings({ eveningTime: e.target.value })} />
           </div>
         </div>
-        <button className="btn" disabled={perm !== 'granted'} onClick={() => notify('Kunlik Navbat', 'Sinov bildirishnomasi ishlayapti ✅', 'test')}>
+        <button className="btn" disabled={perm !== 'granted'} onClick={() => notify('100 kun', 'Sinov bildirishnomasi ishlayapti ✅', 'test')}>
           Sinab ko'rish
         </button>
         <div className="rounded-xl bg-surface2 p-3 text-sm text-muted">

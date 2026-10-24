@@ -33,7 +33,7 @@ export async function importBackup(file: File) {
     throw new Error('Fayl JSON formatida emas')
   }
   if (data?.app !== APP || !Array.isArray(data.items) || !Array.isArray(data.days) || !Array.isArray(data.settings)) {
-    throw new Error("Bu 'Kunlik Navbat' zaxira fayli emas")
+    throw new Error("Bu '100 kun' zaxira fayli emas")
   }
   await db.transaction('rw', [db.settings, db.items, db.days, db.timer, db.transactions, db.pending], async () => {
     await Promise.all([

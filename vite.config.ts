@@ -15,8 +15,8 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         id: base,
-        name: 'Kunlik Navbat',
-        short_name: 'Navbat',
+        name: '100 kun',
+        short_name: '100 kun',
         description: "100 kunlik challenge uchun shaxsiy odatlar trekkeri",
         lang: 'uz',
         dir: 'ltr',
