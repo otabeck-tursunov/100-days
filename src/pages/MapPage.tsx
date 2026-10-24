@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import { DayView } from '../components/DayView'
-import { Modal } from '../components/Modal'
 import { useAppData } from '../hooks/useAppData'
 import { progress } from '../lib/stats'
 import { addDays, formatFull } from '../lib/dates'
@@ -12,13 +9,12 @@ const cellBg = (l: number) =>
 
 export function MapPage() {
   const { settings, items, days, today } = useAppData()
-  const [open, setOpen] = useState<string | null>(null)
 
   return (
     <div className="space-y-4">
       <div className="card">
         <h1 className="mb-1 text-xl font-bold">100 kunlik xarita</h1>
-        <p className="mb-4 text-sm text-muted">Katakni bosing — o'sha kunning tafsilotlari ochiladi.</p>
+        <p className="mb-4 text-sm text-muted">Katakni bosing — o'sha kun alohida sahifada ochiladi.</p>
         <div className="mx-auto grid max-w-3xl grid-cols-10 gap-1.5 sm:gap-2">
           {Array.from({ length: 100 }, (_, i) => {
             const date = addDays(settings.startDate, i)
@@ -26,9 +22,9 @@ export function MapPage() {
             const pct = progress(items, date, days.get(date)).pct
             const l = future ? 0 : level(pct)
             return (
-              <button
+              <a
                 key={date}
-                onClick={() => setOpen(date)}
+                href={`#day/${date}`}
                 aria-label={`${i + 1}-kun, ${formatFull(date)}, ${future ? 'hali kelmagan' : pct + '%'}`}
                 title={`${i + 1}-kun · ${future ? '—' : pct + '%'}`}
                 className={`relative grid aspect-square place-items-center rounded-md text-[10px] font-medium transition hover:scale-110 sm:rounded-lg sm:text-xs ${
@@ -37,7 +33,7 @@ export function MapPage() {
                 style={{ background: cellBg(l) }}
               >
                 {i + 1}
-              </button>
+              </a>
             )
           })}
         </div>
@@ -50,11 +46,6 @@ export function MapPage() {
         </div>
       </div>
 
-      {open && (
-        <Modal title={formatFull(open)} onClose={() => setOpen(null)}>
-          <DayView date={open} />
-        </Modal>
-      )}
     </div>
   )
 }

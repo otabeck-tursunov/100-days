@@ -8,6 +8,7 @@ import { MapPage } from './pages/MapPage'
 import { StatsPage } from './pages/StatsPage'
 import { FinancePage } from './pages/FinancePage'
 import { SettingsPage } from './pages/SettingsPage'
+import { DayPage } from './pages/DayPage'
 
 const TABS = [
   { id: 'today', label: 'Bugun', Page: TodayPage },
@@ -20,9 +21,12 @@ const TABS = [
 type TabId = (typeof TABS)[number]['id']
 const fromHash = (): TabId => (TABS.find((t) => t.id === location.hash.slice(1))?.id ?? 'today')
 
+const dayFromHash = () => location.hash.match(/^#day\/(\d{4}-\d{2}-\d{2})$/)?.[1] ?? null
+
 function Shell() {
   const { settings } = useAppData()
   const [tab, setTab] = useState<TabId>(fromHash)
+  const [dayDate, setDayDate] = useState<string | null>(dayFromHash)
 
   useReminders(settings)
   useTimerWatcher()
@@ -37,7 +41,10 @@ function Shell() {
   }, [settings.theme])
 
   useEffect(() => {
-    const onHash = () => setTab(fromHash())
+    const onHash = () => {
+      setTab(fromHash())
+      setDayDate(dayFromHash())
+    }
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
@@ -55,6 +62,7 @@ function Shell() {
   }, [])
 
   const Page = TABS.find((t) => t.id === tab)!.Page
+  const activeTab: TabId = dayDate ? 'map' : tab
 
   return (
     <div className="min-h-dvh">
@@ -70,8 +78,8 @@ function Shell() {
                 key={t.id}
                 href={`#${t.id}`}
                 title={`Tugma: ${i + 1}`}
-                aria-current={tab === t.id ? 'page' : undefined}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition ${tab === t.id ? 'bg-surface text-fg' : 'text-muted hover:text-fg'}`}
+                aria-current={activeTab === t.id ? 'page' : undefined}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition ${activeTab === t.id ? 'bg-surface text-fg' : 'text-muted hover:text-fg'}`}
               >
                 {t.label}
               </a>
@@ -81,7 +89,7 @@ function Shell() {
       </header>
 
       <main className="mx-auto max-w-6xl px-5 pb-28 pt-4 md:pb-12">
-        <Page />
+        {dayDate ? <DayPage date={dayDate} /> : <Page />}
       </main>
 
       <nav
@@ -92,11 +100,11 @@ function Shell() {
           <a
             key={t.id}
             href={`#${t.id}`}
-            aria-current={tab === t.id ? 'page' : undefined}
-            className={`flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] font-medium ${tab === t.id ? 'text-fg' : 'text-muted'}`}
+            aria-current={activeTab === t.id ? 'page' : undefined}
+            className={`flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] font-medium ${activeTab === t.id ? 'text-fg' : 'text-muted'}`}
           >
             {t.label}
-            <span className={`size-1 rounded-full ${tab === t.id ? 'bg-fg' : 'bg-transparent'}`} />
+            <span className={`size-1 rounded-full ${activeTab === t.id ? 'bg-fg' : 'bg-transparent'}`} />
           </a>
         ))}
       </nav>
