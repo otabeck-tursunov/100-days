@@ -59,7 +59,7 @@ function Shell() {
   return (
     <div className="min-h-dvh">
       <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
           <div className="flex items-center gap-2.5 font-semibold tracking-tight">
             <img src={import.meta.env.BASE_URL + 'favicon.svg'} alt="" className="size-7" />
             Kunlik Navbat
@@ -80,7 +80,7 @@ function Shell() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-5 pb-28 pt-4 md:pb-12">
+      <main className="mx-auto max-w-6xl px-5 pb-28 pt-4 md:pb-12">
         <Page />
       </main>
 

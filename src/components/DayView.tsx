@@ -35,7 +35,7 @@ export function DayView({ date, celebrate = false }: { date: string; celebrate?:
 
   return (
     <>
-      <div className="mx-auto max-w-2xl space-y-5">
+      <div className="w-full space-y-5">
         <div className="grid grid-cols-2 gap-1 rounded-full bg-surface2 p-1" role="tablist" aria-label="Bo'lim">
           {TABS.map(([v, label]) => {
             const p = progress(items, date, day, v)

@@ -19,7 +19,7 @@ export function MapPage() {
       <div className="card">
         <h1 className="mb-1 text-xl font-bold">100 kunlik xarita</h1>
         <p className="mb-4 text-sm text-muted">Katakni bosing — o'sha kunning tafsilotlari ochiladi.</p>
-        <div className="grid grid-cols-10 gap-1.5 sm:gap-2">
+        <div className="mx-auto grid max-w-3xl grid-cols-10 gap-1.5 sm:gap-2">
           {Array.from({ length: 100 }, (_, i) => {
             const date = addDays(settings.startDate, i)
             const future = date > today

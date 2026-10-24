@@ -1,4 +1,5 @@
 import { DayView } from '../components/DayView'
+import { DaySidebar } from '../components/DaySidebar'
 import { useAppData } from '../hooks/useAppData'
 import { useInstall } from '../hooks/useInstall'
 import { dayNumber, progress, streaks } from '../lib/stats'
@@ -27,7 +28,10 @@ export function TodayPage() {
           {canInstall && <button className="btn btn-primary !min-h-9" onClick={install}>O'rnatish</button>}
         </div>
       </div>
-      <DayView date={today} celebrate />
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <DayView date={today} celebrate />
+        <DaySidebar date={today} />
+      </div>
     </div>
   )
 }
