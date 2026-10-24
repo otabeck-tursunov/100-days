@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { toggleCheck } from '../db/actions'
 import type { DayRecord, Item } from '../db/types'
 import { ItemExtra } from './widgets/Widgets'
@@ -24,7 +24,6 @@ function onArrow(e: React.KeyboardEvent<HTMLButtonElement>) {
 export function ChecklistItem({ item, date, day, isToday }: Props) {
   const checked = !!day.checks[item.id]
   const [anim, setAnim] = useState(0)
-  const boxRef = useRef<HTMLSpanElement>(null)
 
   const toggle = () => {
     if (!checked) setAnim((n) => n + 1)
@@ -32,24 +31,23 @@ export function ChecklistItem({ item, date, day, isToday }: Props) {
   }
 
   return (
-    <li className="rounded-xl transition hover:bg-accent-soft/60">
+    <li className="border-t border-line first:border-t-0">
       <button
         data-check
         role="checkbox"
         aria-checked={checked}
         onClick={toggle}
         onKeyDown={onArrow}
-        className="flex min-h-12 w-full items-center gap-3 rounded-xl px-2 py-2 text-left"
+        className="flex min-h-14 w-full items-center gap-4 rounded-xl py-3 text-left"
       >
         <span
-          ref={boxRef}
           key={anim}
-          className={`grid size-7 shrink-0 place-items-center rounded-lg border-2 transition-colors ${
-            checked ? 'pop border-accent bg-accent text-white' : 'border-line bg-bg'
+          className={`grid size-6 shrink-0 place-items-center rounded-full border-[1.5px] transition-colors ${
+            checked ? 'pop border-accent bg-accent text-white' : 'border-muted/50'
           }`}
         >
           {checked && (
-            <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12.5l4.5 4.5L19 7.5" />
             </svg>
           )}
@@ -59,7 +57,7 @@ export function ChecklistItem({ item, date, day, isToday }: Props) {
         </span>
       </button>
       {item.kind !== 'normal' && (
-        <div className="pb-2 pl-12 pr-2">
+        <div className="pb-4 pl-10">
           <ItemExtra item={item} date={date} day={day} isToday={isToday} />
         </div>
       )}

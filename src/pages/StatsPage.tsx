@@ -81,7 +81,7 @@ export function StatsPage() {
       </div>
 
       <section className="card">
-        <h2 className="mb-3 font-semibold">🚴 Kuryerlik daromadi</h2>
+        <h2 className="mb-3 font-semibold">Kuryerlik daromadi</h2>
         <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Stat label="Jami" value={`${formatMoney(s.money)}`} sub="so'm" />
           <Stat label="Ishlangan kunlar" value={String(s.workDays)} />
@@ -103,7 +103,7 @@ export function StatsPage() {
             <li key={it.id} className={it.section === 'morning' ? 'sec-morning' : 'sec-evening'}>
               <div className="mb-1 flex justify-between gap-3 text-sm">
                 <span>
-                  {it.section === 'morning' ? '☀️' : '🌙'} {it.title}
+                  {it.title}
                   {it.archivedDay && <span className="text-muted"> (o'chirilgan)</span>}
                 </span>
                 <span className="shrink-0 font-semibold text-accent" title={`${done} / ${n} kun`}>{pct}%</span>

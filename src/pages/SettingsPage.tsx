@@ -8,7 +8,7 @@ import { useInstall } from '../hooks/useInstall'
 import { notificationsSupported, notify, requestPermission } from '../lib/notifications'
 import { itemsFor } from '../lib/stats'
 
-const THEMES: [ThemeMode, string][] = [['light', '☀️ Yorug\''], ['dark', '🌙 Qorong\'i'], ['system', '💻 Tizim']]
+const THEMES: [ThemeMode, string][] = [['light', 'Yorug\''], ['dark', 'Qorong\'i'], ['system', 'Tizim']]
 
 function ItemList({ section, title }: { section: Section; title: string }) {
   const { items, today } = useAppData()
@@ -118,8 +118,8 @@ export function SettingsPage() {
 
       <section className="card space-y-6">
         <h2 className="font-semibold">Ro'yxatlar</h2>
-        <ItemList section="morning" title="☀️ Tongi navbat" />
-        <ItemList section="evening" title="🌙 Kechki tekshiruv" />
+        <ItemList section="morning" title="Tongi navbat" />
+        <ItemList section="evening" title="Kechki tekshiruv" />
         <p className="text-xs text-muted">O'chirilgan band bugundan boshlab yo'qoladi, o'tgan kunlardagi belgilar va statistika saqlanadi.</p>
       </section>
 
@@ -131,7 +131,7 @@ export function SettingsPage() {
             disabled={perm === 'unsupported'}
             onClick={async () => setPerm(await requestPermission())}
           >
-            🔔 Bildirishnomaga ruxsat berish
+            Bildirishnomaga ruxsat berish
           </button>
         )}
         {perm === 'denied' && <p className="text-sm text-red-500">Ruxsat rad etilgan. Brauzer sayt sozlamalaridan yoqing.</p>}
@@ -163,9 +163,9 @@ export function SettingsPage() {
       <section className="card space-y-3">
         <h2 className="font-semibold">Ilovani o'rnatish</h2>
         {installed ? (
-          <p className="text-sm text-muted">✅ Ilova o'rnatilgan.</p>
+          <p className="text-sm text-muted">Ilova o'rnatilgan.</p>
         ) : canInstall ? (
-          <button className="btn btn-primary" onClick={install}>⬇ Ilovani o'rnatish</button>
+          <button className="btn btn-primary" onClick={install}>Ilovani o'rnatish</button>
         ) : (
           <p className="text-sm text-muted">
             Chrome/Edge: manzil qatoridagi o'rnatish belgisi yoki menyu → “Ilovani o'rnatish”. iPhone (Safari): Ulashish
@@ -178,8 +178,8 @@ export function SettingsPage() {
         <h2 className="font-semibold">Zaxira nusxa</h2>
         <p className="text-sm text-muted">Ma'lumotlar faqat shu qurilmada saqlanadi. Kompyuter va telefon o'rtasida ko'chirish uchun eksport/import qiling.</p>
         <div className="flex flex-wrap gap-2">
-          <button className="btn btn-primary" onClick={exportBackup}>⬇ JSON'ga eksport</button>
-          <button className="btn" onClick={() => fileRef.current?.click()}>⬆ Fayldan tiklash</button>
+          <button className="btn btn-primary" onClick={exportBackup}>JSON'ga eksport</button>
+          <button className="btn" onClick={() => fileRef.current?.click()}>Fayldan tiklash</button>
           <input ref={fileRef} type="file" accept="application/json,.json" hidden onChange={(e) => { void onImport(e.target.files?.[0]); e.target.value = '' }} />
         </div>
         {msg && <p className="text-sm text-red-500" role="alert">{msg}</p>}

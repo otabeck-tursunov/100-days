@@ -10,11 +10,11 @@ import { FinancePage } from './pages/FinancePage'
 import { SettingsPage } from './pages/SettingsPage'
 
 const TABS = [
-  { id: 'today', label: 'Bugun', icon: '✅', Page: TodayPage },
-  { id: 'map', label: 'Xarita', icon: '🗓', Page: MapPage },
-  { id: 'finance', label: 'Moliya', icon: '💰', Page: FinancePage },
-  { id: 'stats', label: 'Statistika', icon: '📊', Page: StatsPage },
-  { id: 'settings', label: 'Sozlamalar', icon: '⚙️', Page: SettingsPage },
+  { id: 'today', label: 'Bugun', Page: TodayPage },
+  { id: 'map', label: 'Xarita', Page: MapPage },
+  { id: 'finance', label: 'Moliya', Page: FinancePage },
+  { id: 'stats', label: 'Statistika', Page: StatsPage },
+  { id: 'settings', label: 'Sozlamalar', Page: SettingsPage },
 ] as const
 
 type TabId = (typeof TABS)[number]['id']
@@ -58,10 +58,10 @@ function Shell() {
 
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5">
-          <div className="flex items-center gap-2 font-bold">
-            <img src={import.meta.env.BASE_URL + 'favicon.svg'} alt="" className="size-8" />
+      <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3">
+          <div className="flex items-center gap-2.5 font-semibold tracking-tight">
+            <img src={import.meta.env.BASE_URL + 'favicon.svg'} alt="" className="size-7" />
             Kunlik Navbat
           </div>
           <nav className="hidden gap-1 md:flex" aria-label="Asosiy">
@@ -71,7 +71,7 @@ function Shell() {
                 href={`#${t.id}`}
                 title={`Tugma: ${i + 1}`}
                 aria-current={tab === t.id ? 'page' : undefined}
-                className={`rounded-xl px-4 py-2 text-sm font-medium transition ${tab === t.id ? 'bg-surface2' : 'text-muted hover:bg-surface2/60'}`}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition ${tab === t.id ? 'bg-surface text-fg' : 'text-muted hover:text-fg'}`}
               >
                 {t.label}
               </a>
@@ -80,12 +80,12 @@ function Shell() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 pb-28 pt-4 md:pb-10">
+      <main className="mx-auto max-w-5xl px-5 pb-28 pt-4 md:pb-12">
         <Page />
       </main>
 
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 bg-bg/90 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
         aria-label="Asosiy"
       >
         {TABS.map((t) => (
@@ -93,10 +93,10 @@ function Shell() {
             key={t.id}
             href={`#${t.id}`}
             aria-current={tab === t.id ? 'page' : undefined}
-            className={`flex min-h-16 flex-col items-center justify-center gap-0.5 text-xs font-medium ${tab === t.id ? 'text-morning' : 'text-muted'}`}
+            className={`flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] font-medium ${tab === t.id ? 'text-fg' : 'text-muted'}`}
           >
-            <span className="text-xl" aria-hidden>{t.icon}</span>
             {t.label}
+            <span className={`size-1 rounded-full ${tab === t.id ? 'bg-fg' : 'bg-transparent'}`} />
           </a>
         ))}
       </nav>

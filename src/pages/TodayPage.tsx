@@ -16,19 +16,15 @@ export function TodayPage() {
 
   return (
     <div className="space-y-4">
-      <div className="card flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-end justify-between gap-4 px-1 pb-2 pt-4">
         <div>
-          <h1 className="text-2xl font-bold">{title}</h1>
-          <p className="text-muted">{formatLong(today)}</p>
+          <p className="text-sm text-muted">{formatLong(today)}</p>
+          <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-morning/15 px-3 py-1.5 text-sm font-semibold text-morning" title="Ketma-ket kunlar">
-            🔥 {current} kun ketma-ket
-          </span>
-          <span className="rounded-full bg-surface2 px-3 py-1.5 text-sm font-semibold">Bugun: {pct}%</span>
-          {canInstall && (
-            <button className="btn btn-primary" onClick={install}>⬇ Ilovani o'rnatish</button>
-          )}
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="rounded-full bg-surface px-3.5 py-1.5" title="Ketma-ket kunlar">Seriya <b>{current}</b></span>
+          <span className="rounded-full bg-surface px-3.5 py-1.5">Bugun <b>{pct}%</b></span>
+          {canInstall && <button className="btn btn-primary !min-h-9" onClick={install}>O'rnatish</button>}
         </div>
       </div>
       <DayView date={today} celebrate />
