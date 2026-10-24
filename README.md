@@ -28,27 +28,22 @@ Ikonkalarni qayta yaratish (SVG manbasi `scripts/generate-icons.mjs` ichida):
 npm run icons
 ```
 
-## 2. GitHub'ga yuklash
+## 2. GitHub Pages'ga joylash (hozirgi usul, bepul)
+
+Ilova shu yerda joylangan: **https://otabeck-tursunov.github.io/100-days/**
+
+Yangilash uchun (o'zgartirishdan keyin):
 
 ```bash
-git init
-git add .
-git commit -m "Kunlik Navbat"
-git branch -M main
-git remote add origin https://github.com/<foydalanuvchi>/kunlik-navbat.git
-git push -u origin main
+git add . && git commit -m "yangilash" && git push
+npm run deploy
 ```
 
-(Avval github.com'da bo'sh `kunlik-navbat` repozitoriysini yarating.)
+`npm run deploy` build qilib, natijani `gh-pages` tarmog'iga yuboradi (GitHub Pages shu tarmoqdan xizmat qiladi). Sahifa manzili repozitoriy nomiga bog'liq (`/100-days/`), skript buni o'zi aniqlaydi.
 
-## 3. Vercel'ga joylash
+## 3. Muqobil: Vercel
 
-1. [vercel.com](https://vercel.com) ga GitHub akkauntingiz bilan kiring.
-2. **Add New → Project** va `kunlik-navbat` repozitoriysini tanlang.
-3. Sozlamalar avtomatik aniqlanadi: Framework **Vite**, Build `npm run build`, Output `dist`.
-4. **Deploy** ni bosing. Tayyor manzil: `https://kunlik-navbat.vercel.app` ko'rinishida bo'ladi.
-
-Keyingi `git push` har safar avtomatik yangilaydi, ilova esa o'zi yangi versiyaga o'tadi.
+Vercel'da repozitoriyni import qiling (Framework: Vite, Build: `npm run build`, Output: `dist`). `BASE_PATH` berilmasa ilova ildizda (`/`) ishlaydi.
 
 ## 4. Windows'ga ilova sifatida o'rnatish
 
