@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc766"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <linearGradient id="moon" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d5bd0"/><stop offset="1" stop-color="#2a1f6b"/></linearGradient>
+    <clipPath id="disc"><circle cx="256" cy="256" r="190"/></clipPath>
+    <mask id="crescent"><rect width="512" height="512" fill="#fff"/><circle cx="352" cy="322" r="30" fill="#000"/></mask>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#1b1533"/>
+  <g transform="translate(256 256) scale(1) translate(-256 -256)">
+    <g clip-path="url(#disc)">
+      <polygon points="0,0 512,0 0,512" fill="url(#sun)"/>
+      <polygon points="512,0 512,512 0,512" fill="url(#moon)"/>
+    </g>
+    <circle cx="256" cy="256" r="190" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="6"/>
+    <g fill="#fff7e0" stroke="#fff7e0" stroke-width="8" stroke-linecap="round">
+      <circle cx="188" cy="188" r="24" stroke="none"/>
+      <path d="M188 142v-14M188 234v14M142 188h-14M234 188h14M155 155l-10-10M221 221l10 10M155 221l-10 10M221 155l10-10"/>
+    </g>
+    <g mask="url(#crescent)"><circle cx="336" cy="336" r="32" fill="#e0e7ff"/></g>
+    <circle cx="372" cy="290" r="6" fill="#e0e7ff"/><circle cx="290" cy="372" r="5" fill="#e0e7ff"/>
+    <polyline points="198,262 242,306 318,222" fill="none" stroke="#fff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
