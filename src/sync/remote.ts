@@ -49,9 +49,10 @@ async function http(url: string, init: RequestInit): Promise<Response> {
   }
 }
 
+/** Yangi publishable kalit (sb_publishable_...) faqat apikey sarlavhasida yuboriladi; eski JWT anon kalit Bearer sifatida ham. */
 const headers = (cfg: SyncConfig, token?: string, extra: Record<string, string> = {}) => ({
   apikey: cfg.key,
-  Authorization: `Bearer ${token ?? cfg.key}`,
+  ...(token ? { Authorization: `Bearer ${token}` } : cfg.key.startsWith('eyJ') ? { Authorization: `Bearer ${cfg.key}` } : {}),
   'Content-Type': 'application/json',
   ...extra,
 })
