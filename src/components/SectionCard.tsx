@@ -2,6 +2,7 @@ import type { DayRecord, Item, Section } from '../db/types'
 import { progress } from '../lib/stats'
 import { ChecklistItem } from './ChecklistItem'
 import { DayExpenses } from './DayExpenses'
+import { TelegramPost } from './TelegramPost'
 
 const META = {
   morning: { title: 'Tongi navbat', cls: 'sec-morning' },
@@ -35,6 +36,7 @@ export function SectionCard({ section, items, date, day, isToday }: {
         {!list.length && <li className="py-3 text-sm text-muted">Bandlar yo'q. Sozlamalardan qo'shing.</li>}
       </ul>
       {section === 'evening' && <DayExpenses date={date} />}
+      {section === 'morning' && <TelegramPost date={date} morning={list} day={day} />}
     </section>
   )
 }
