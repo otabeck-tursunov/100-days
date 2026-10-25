@@ -36,6 +36,10 @@ export async function mergeFinance(file: File) {
     throw new Error('Fayl JSON formatida emas')
   }
   if (data?.app !== APP) throw new Error("Bu '100 kun' fayli emas")
+  return mergeFinanceData(data)
+}
+
+export async function mergeFinanceData(data: { transactions?: any[]; pending?: any[] }) {
   const txs: any[] = Array.isArray(data.transactions) ? data.transactions : []
   const pend: any[] = Array.isArray(data.pending) ? data.pending : []
   let added = 0

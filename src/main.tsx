@@ -5,6 +5,7 @@ import './index.css'
 import App from './App'
 import { initDb } from './db/db'
 import { installSyncHooks } from './sync/engine'
+import { importFromHash } from './db/linkImport'
 
 // Yangi versiya chiqsa tez topiladi va ilova o'zi qayta yuklanadi
 registerSW({
@@ -29,7 +30,10 @@ if (navigator.serviceWorker?.controller) {
 
 installSyncHooks()
 
-initDb().finally(() => {
+// Ilova ochiq turganda havola bosilsa ham (sahifa qayta yuklanmaydi, faqat # o'zgaradi)
+window.addEventListener('hashchange', () => void importFromHash().then((msg) => msg && alert(msg)))
+
+initDb().then(importFromHash).then((msg) => msg && alert(msg)).finally(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <App />
