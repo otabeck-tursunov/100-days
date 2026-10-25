@@ -52,15 +52,6 @@ export interface DayRecord {
   earnings: number | null
 }
 
-export interface TimerState {
-  id: 'focus'
-  status: 'idle' | 'running' | 'paused'
-  date: string
-  targetMs: number
-  accumulatedMs: number
-  startedAt: number | null
-}
-
 /** Kirim (kuryerlikdan tashqari, odatda yirik) yoki xarajat */
 export interface Transaction {
   id: string

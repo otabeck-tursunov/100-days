@@ -12,7 +12,6 @@ export async function exportBackup() {
     settings: await db.settings.toArray(),
     items: await db.items.toArray(),
     days: await db.days.toArray(),
-    timer: await db.timer.toArray(),
     transactions: await db.transactions.toArray(),
     pending: await db.pending.toArray(),
   }
@@ -64,9 +63,9 @@ export async function importBackup(file: File) {
   if (data?.app !== APP || !Array.isArray(data.items) || !Array.isArray(data.days) || !Array.isArray(data.settings)) {
     throw new Error("Bu '100 kun' zaxira fayli emas")
   }
-  await db.transaction('rw', [db.settings, db.items, db.days, db.timer, db.transactions, db.pending], async () => {
+  await db.transaction('rw', [db.settings, db.items, db.days, db.transactions, db.pending], async () => {
     await Promise.all([
-      db.settings.clear(), db.items.clear(), db.days.clear(), db.timer.clear(),
+      db.settings.clear(), db.items.clear(), db.days.clear(),
       db.transactions.clear(), db.pending.clear(),
     ])
     if (Array.isArray(data.transactions)) await db.transactions.bulkPut(data.transactions)
@@ -74,7 +73,6 @@ export async function importBackup(file: File) {
     await db.settings.bulkPut(data.settings)
     await db.items.bulkPut(data.items)
     await db.days.bulkPut(data.days)
-    if (Array.isArray(data.timer)) await db.timer.bulkPut(data.timer)
   })
   markForcePush()
 }

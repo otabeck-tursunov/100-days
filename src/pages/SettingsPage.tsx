@@ -107,7 +107,7 @@ export function SettingsPage() {
             <input type="date" className="input" value={s.startDate} onChange={(e) => e.target.value && updateSettings({ startDate: e.target.value })} />
           </label>
           <label>
-            <span className="label">Fokus taymer (daqiqa)</span>
+            <span className="label">Full Stack standart vaqti (daqiqa)</span>
             <input type="number" min={5} max={600} className="input" value={s.focusMinutes} onChange={(e) => updateSettings({ focusMinutes: Math.max(5, +e.target.value || 120) })} />
           </label>
           <label>

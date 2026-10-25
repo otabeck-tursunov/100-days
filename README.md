@@ -84,9 +84,9 @@ so'ng `npm run deploy`. Birlashtirish qoidasi: har bir belgi, matn va yozuv o'z 
 
 ```
 src/
-  db/          Dexie sxemasi, standart ro'yxatlar, amallar, taymer, zaxira
+  db/          Dexie sxemasi, standart ro'yxatlar, amallar, zaxira
   lib/         sana (03:00 almashuvi), statistika, bildirishnoma, mavzu
-  hooks/       ma'lumotlar konteksti, taymer kuzatuvchisi, eslatmalar, o'rnatish
+  hooks/       ma'lumotlar konteksti, eslatmalar, o'rnatish
   components/  ro'yxat, bo'lim, kun ko'rinishi, vidjetlar, grafik, modal
   pages/       Bugun, Xarita, Statistika, Sozlamalar
 ```

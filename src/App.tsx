@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AppDataProvider, useAppData } from './hooks/useAppData'
 import { useReminders } from './hooks/useReminders'
-import { useTimerWatcher } from './hooks/useTimer'
 import { applyTheme } from './lib/theme'
 import { startSync } from './sync/engine'
 import { TodayPage } from './pages/TodayPage'
@@ -30,7 +29,6 @@ function Shell() {
   const [dayDate, setDayDate] = useState<string | null>(dayFromHash)
 
   useReminders(settings)
-  useTimerWatcher()
   useEffect(() => startSync(), [])
 
   useEffect(() => {

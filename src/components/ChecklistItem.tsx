@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { toggleCheck } from '../db/actions'
 import type { DayRecord, Item } from '../db/types'
+import { useAppData } from '../hooks/useAppData'
 import { ItemExtra } from './widgets/Widgets'
 
 interface Props {
@@ -22,12 +23,16 @@ function onArrow(e: React.KeyboardEvent<HTMLButtonElement>) {
 }
 
 export function ChecklistItem({ item, date, day, isToday }: Props) {
+  const { settings } = useAppData()
   const checked = !!day.checks[item.id]
   const [anim, setAnim] = useState(0)
 
   const toggle = () => {
     if (!checked) setAnim((n) => n + 1)
-    void toggleCheck(date, item.id)
+    // Full Stack belgilanganda vaqt kiritilmagan bo'lsa, standart vaqt (2 soat) o'zi yoziladi
+    void toggleCheck(date, item.id, (d, nowChecked) => {
+      if (item.kind === 'focus' && nowChecked && d.focusMinutes === 0) d.focusMinutes = settings.focusMinutes
+    })
   }
 
   return (

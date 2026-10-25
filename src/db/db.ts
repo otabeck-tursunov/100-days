@@ -1,12 +1,11 @@
 import Dexie, { type Table } from 'dexie'
-import type { DayRecord, Item, Pending, Settings, TimerState, Transaction } from './types'
+import type { DayRecord, Item, Pending, Settings, Transaction } from './types'
 import { DEFAULT_ITEMS, DEFAULT_SETTINGS } from './defaults'
 
 class AppDB extends Dexie {
   settings!: Table<Settings, string>
   items!: Table<Item, string>
   days!: Table<DayRecord, string>
-  timer!: Table<TimerState, string>
   transactions!: Table<Transaction, string>
   pending!: Table<Pending, string>
 
@@ -22,6 +21,8 @@ class AppDB extends Dexie {
       transactions: 'id, date',
       pending: 'id, status',
     })
+    // taymer olib tashlandi
+    this.version(3).stores({ timer: null })
   }
 }
 
