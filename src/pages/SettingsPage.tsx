@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { addItem, moveItem, removeItem, renameItem, updateSettings } from '../db/actions'
-import { exportBackup, importBackup } from '../db/backup'
+import { exportBackup, importBackup, mergeFinance } from '../db/backup'
 import type { Item, Section, ThemeMode } from '../db/types'
 import { DebouncedInput } from '../components/DebouncedInput'
 import { useAppData } from '../hooks/useAppData'
@@ -69,6 +69,7 @@ export function SettingsPage() {
   const { settings: s } = useAppData()
   const { canInstall, installed, install } = useInstall()
   const fileRef = useRef<HTMLInputElement>(null)
+  const mergeRef = useRef<HTMLInputElement>(null)
   const [perm, setPerm] = useState<string>(notificationsSupported() ? Notification.permission : 'unsupported')
   const [msg, setMsg] = useState('')
 
@@ -78,6 +79,16 @@ export function SettingsPage() {
     try {
       await importBackup(file)
       location.reload()
+    } catch (e) {
+      setMsg((e as Error).message)
+    }
+  }
+
+  const onMerge = async (file?: File) => {
+    if (!file) return
+    try {
+      const n = await mergeFinance(file)
+      setMsg(n ? `${n} ta moliya yozuvi qo'shildi.` : "Yangi yozuv yo'q (hammasi allaqachon bor).")
     } catch (e) {
       setMsg((e as Error).message)
     }
@@ -181,8 +192,11 @@ export function SettingsPage() {
           <button className="btn btn-primary" onClick={exportBackup}>JSON'ga eksport</button>
           <button className="btn" onClick={() => fileRef.current?.click()}>Fayldan tiklash</button>
           <input ref={fileRef} type="file" accept="application/json,.json" hidden onChange={(e) => { void onImport(e.target.files?.[0]); e.target.value = '' }} />
+          <button className="btn" onClick={() => mergeRef.current?.click()}>Moliya yozuvlarini qo'shish</button>
+          <input ref={mergeRef} type="file" accept="application/json,.json" hidden data-testid="merge-input" onChange={(e) => { void onMerge(e.target.files?.[0]); e.target.value = '' }} />
         </div>
-        {msg && <p className="text-sm text-red-500" role="alert">{msg}</p>}
+        <p className="text-xs text-muted">“Fayldan tiklash” hamma narsani almashtiradi. “Moliya yozuvlarini qo'shish” esa mavjud ma'lumotni saqlab, faqat yangi kirim/xarajat va kutilayotgan to'lovlarni qo'shadi.</p>
+        {msg && <p className="text-sm text-muted" role="status">{msg}</p>}
       </section>
     </div>
   )

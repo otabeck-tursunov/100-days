@@ -24,6 +24,33 @@ export async function exportBackup() {
   setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
+/**
+ * Qo'shib import: mavjud ma'lumotlar saqlanadi, faqat moliya yozuvlari (transactions, pending)
+ * qo'shiladi. Id si bor yozuv qayta yozilmaydi (to'langan holati buzilmaydi). Qo'shilganlar sonini qaytaradi.
+ */
+export async function mergeFinance(file: File) {
+  let data: any
+  try {
+    data = JSON.parse(await file.text())
+  } catch {
+    throw new Error('Fayl JSON formatida emas')
+  }
+  if (data?.app !== APP) throw new Error("Bu '100 kun' fayli emas")
+  const txs: any[] = Array.isArray(data.transactions) ? data.transactions : []
+  const pend: any[] = Array.isArray(data.pending) ? data.pending : []
+  let added = 0
+  await db.transaction('rw', db.transactions, db.pending, async () => {
+    const haveT = new Set(await db.transactions.toCollection().primaryKeys())
+    const haveP = new Set(await db.pending.toCollection().primaryKeys())
+    const newT = txs.filter((t) => t?.id && !haveT.has(t.id))
+    const newP = pend.filter((p) => p?.id && !haveP.has(p.id))
+    await db.transactions.bulkAdd(newT)
+    await db.pending.bulkAdd(newP)
+    added = newT.length + newP.length
+  })
+  return added
+}
+
 /** Fayldan tiklaydi; mavjud ma'lumotlar almashtiriladi. Xato bo'lsa Error tashlaydi. */
 export async function importBackup(file: File) {
   let data: any

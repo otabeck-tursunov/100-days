@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/db'
 import type { Pending, Transaction } from '../db/types'
 import { useAppData } from '../hooks/useAppData'
-import { addMonths, formatLong, formatMonth } from '../lib/dates'
+import { addDays, addMonths, formatLong, formatMonth } from '../lib/dates'
 import { formatMoney } from '../lib/format'
 import { COURIER_CATEGORY, DEFAULT_CATEGORIES, FALLBACK_CATEGORY } from '../lib/categories'
 
@@ -109,6 +109,7 @@ function PendingSection({ today }: { today: string }) {
   const [who, setWho] = useState('')
   const [note, setNote] = useState('')
   const [due, setDue] = useState('')
+  const [showAll, setShowAll] = useState(false)
 
   const open = list.filter((p) => p.status === 'open').sort((a, b) => (a.dueDate ?? '9999').localeCompare(b.dueDate ?? '9999'))
   const sum = (d: Pending['direction']) => open.filter((p) => p.direction === d).reduce((a, p) => a + p.amount, 0)
@@ -151,7 +152,7 @@ function PendingSection({ today }: { today: string }) {
       </div>
 
       <ul className="space-y-2">
-        {open.map((p) => {
+        {(showAll ? open : open.slice(0, 6)).map((p) => {
           const late = p.dueDate && p.dueDate < today
           return (
             <li key={p.id} className="flex flex-wrap items-center gap-2 rounded-xl border border-line p-3">
@@ -176,6 +177,11 @@ function PendingSection({ today }: { today: string }) {
         })}
         {!open.length && <li className="text-sm text-muted">Kutilayotgan to'lovlar yo'q.</li>}
       </ul>
+      {open.length > 6 && (
+        <button className="btn w-full" onClick={() => setShowAll((v) => !v)}>
+          {showAll ? 'Qisqartirish' : `Yana ${open.length - 6} ta to'lovni ko'rsatish`}
+        </button>
+      )}
       <p className="text-xs text-muted">“Olindi / To'landi” bosilsa, shu summa bugungi kirim yoki xarajat sifatida avtomatik yoziladi.</p>
 
       <form onSubmit={add} className="space-y-3 border-t border-line pt-4">
@@ -266,6 +272,16 @@ export function FinancePage() {
   const [month, setMonth] = useState(today.slice(0, 7))
   const [filter, setFilter] = useState<{ type: Transaction['type']; name: string } | null>(null)
   const txs = useLiveQuery(() => db.transactions.toArray()) ?? []
+  const pendingAll = useLiveQuery(() => db.pending.toArray()) ?? []
+
+  // Hamyon: barcha vaqt bo'yicha kirim (kuryerlik bilan) − xarajat
+  const wallet =
+    txs.reduce((a, t) => a + (t.type === 'income' ? t.amount : -t.amount), 0) +
+    [...days.values()].reduce((a, d) => a + (d.earnings ?? 0), 0)
+  const horizon = addDays(today, 30)
+  const due30 = pendingAll
+    .filter((p) => p.status === 'open' && p.direction === 'payable' && p.dueDate && p.dueDate <= horizon)
+    .reduce((a, p) => a + p.amount, 0)
 
   const inMonth = txs.filter((t) => t.date.startsWith(month)).sort((a, b) => b.date.localeCompare(a.date))
   const income = inMonth.filter((t) => t.type === 'income').reduce((a, t) => a + t.amount, 0)
@@ -290,6 +306,12 @@ export function FinancePage() {
           <span className="min-w-32 text-center font-medium capitalize">{formatMonth(month)}</span>
           <button className="btn !px-3" onClick={() => setMonth(addMonths(month, 1))} aria-label="Keyingi oy">→</button>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <Summary label="Hamyon (jami qoldiq)" value={wallet} tone={wallet >= 0 ? 'good' : 'bad'} />
+        <Summary label="Keyingi 30 kunda to'lanadi" value={due30} tone="bad" />
+        <Summary label="To'lovlardan keyin qoladi" value={wallet - due30} tone={wallet - due30 >= 0 ? 'good' : 'bad'} />
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
