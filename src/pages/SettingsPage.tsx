@@ -3,6 +3,7 @@ import { addItem, moveItem, removeItem, renameItem, updateSettings } from '../db
 import { exportBackup, importBackup, mergeFinance } from '../db/backup'
 import type { Item, Section, ThemeMode } from '../db/types'
 import { DebouncedInput } from '../components/DebouncedInput'
+import { SyncSection } from '../components/SyncSection'
 import { useAppData } from '../hooks/useAppData'
 import { useInstall } from '../hooks/useInstall'
 import { notificationsSupported, notify, requestPermission } from '../lib/notifications'
@@ -184,6 +185,8 @@ export function SettingsPage() {
           </p>
         )}
       </section>
+
+      <SyncSection />
 
       <section className="card space-y-3">
         <h2 className="font-semibold">Zaxira nusxa</h2>

@@ -57,6 +57,25 @@ Telefonda: Android (Chrome) — menyu → *Ilovani o'rnatish*; iPhone (Safari) �
 
 Bildirishnomalar serverdan emas, ilovaning o'zidan chiqadi, shuning uchun **ilova/brauzer ishlab turganda** ishlaydi. Windows'da Chrome/Edge sozlamalarida fon ilovalarini yoqing va o'rnatilgan ilovani kirishda ishga tushiring. iPhone'da faqat Bosh ekranga qo'shilgan ilovada (iOS 16.4+). Batafsil — ilovaning *Sozlamalar* sahifasida.
 
+## Barcha qurilmada bir xil ma'lumot (bulutli sinxronlash)
+
+Ilova mahalliy bazada (IndexedDB) oflayn ishlaydi, o'zgarishlar esa bepul [Supabase](https://supabase.com) bazasi orqali qurilmalar o'rtasida avtomatik almashadi. Qurilma almashsa yoki brauzer ma'lumoti o'chsa, kirganingizda hammasi bulutdan qaytadi.
+
+1. supabase.com da bepul loyiha yarating.
+2. **SQL Editor**da `supabase/schema.sql` faylini ishga tushiring.
+3. **Authentication → Providers → Email** da *Confirm email* ni o'chiring.
+4. **Project Settings → API** dan *Project URL* va *anon public* kalitni oling (anon kalit ochiq bo'lishi mo'ljallangan, himoya jadval qoidalari bilan).
+5. Ilovada **Sozlamalar → Bulutli sinxronlash**: URL va kalitni kiriting, birinchi qurilmada *Ro'yxatdan o'tish*, boshqalarida shu email/parol bilan *Kirish*.
+
+URL va kalitni har qurilmada qo'lda kiritmaslik uchun ularni build'ga qo'shish mumkin: loyiha ildizida `.env.local` yarating:
+
+```
+VITE_SUPABASE_URL=https://xxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJ...
+```
+
+so'ng `npm run deploy`. Birlashtirish qoidasi: har bir belgi, matn va yozuv o'z vaqti bo'yicha hal bo'ladi (oxirgi o'zgartirgan yutadi), shuning uchun ikki qurilmada bir kunning turli bandlari bir vaqtda belgilansa ikkalasi ham saqlanadi.
+
 ## Zaxira nusxa
 
 *Sozlamalar → Zaxira nusxa* orqali JSON'ga eksport qiling va boshqa qurilmada shu yerdan tiklang. Muhim ma'lumotni vaqti-vaqti bilan eksport qilib turing: brauzer ma'lumotlarini tozalash IndexedDB'ni ham o'chiradi.

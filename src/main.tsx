@@ -4,6 +4,7 @@ import { registerSW } from 'virtual:pwa-register'
 import './index.css'
 import App from './App'
 import { initDb } from './db/db'
+import { installSyncHooks } from './sync/engine'
 
 // Yangi versiya chiqsa tez topiladi va ilova o'zi qayta yuklanadi
 registerSW({
@@ -25,6 +26,8 @@ if (navigator.serviceWorker?.controller) {
     location.reload()
   })
 }
+
+installSyncHooks()
 
 initDb().finally(() => {
   createRoot(document.getElementById('root')!).render(

@@ -2,6 +2,7 @@ import type { Item, ItemKind, Section, Settings } from './types'
 
 export const DEFAULT_SETTINGS: Settings = {
   id: 'main',
+  updatedAt: 0,
   startDate: '2026-10-25',
   theme: 'system',
   focusMinutes: 120,
@@ -45,6 +46,7 @@ function build(list: Seed[], section: Section, prefix: string): Item[] {
     title,
     order: i,
     kind: kind ?? 'normal',
+    updatedAt: 0,
     createdDay: '0000-00-00',
     archivedDay: null,
   }))

@@ -1,5 +1,6 @@
 import { db } from './db'
 import { logicalDate } from '../lib/dates'
+import { markForcePush } from '../sync/engine'
 
 const APP = 'kunlik-navbat'
 
@@ -44,8 +45,9 @@ export async function mergeFinance(file: File) {
     const haveP = new Set(await db.pending.toCollection().primaryKeys())
     const newT = txs.filter((t) => t?.id && !haveT.has(t.id))
     const newP = pend.filter((p) => p?.id && !haveP.has(p.id))
-    await db.transactions.bulkAdd(newT)
-    await db.pending.bulkAdd(newP)
+    // updatedAt: 0 — boshqa qurilmadagi (o'zgartirilgan) nusxa har doim ustun bo'lsin
+    await db.transactions.bulkAdd(newT.map((t) => ({ ...t, updatedAt: t.updatedAt ?? 0 })))
+    await db.pending.bulkAdd(newP.map((p) => ({ ...p, updatedAt: p.updatedAt ?? 0 })))
     added = newT.length + newP.length
   })
   return added
@@ -74,4 +76,5 @@ export async function importBackup(file: File) {
     await db.days.bulkPut(data.days)
     if (Array.isArray(data.timer)) await db.timer.bulkPut(data.timer)
   })
+  markForcePush()
 }

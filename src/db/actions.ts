@@ -1,11 +1,14 @@
 import { db } from './db'
 import { emptyDay, type DayRecord, type Item, type Section, type Settings, type TimerState } from './types'
 import { isApplicable } from '../lib/stats'
+import { stampDay } from './dayStamp'
 
 export async function patchDay(date: string, fn: (d: DayRecord) => void) {
   await db.transaction('rw', db.days, async () => {
-    const d = (await db.days.get(date)) ?? emptyDay(date)
+    const old = await db.days.get(date)
+    const d = old ? structuredClone(old) : emptyDay(date)
     fn(d)
+    stampDay(old, d)
     await db.days.put(d)
   })
 }
@@ -87,9 +90,11 @@ export async function finishTimer(complete: boolean) {
     const focusItem = complete
       ? (await db.items.toArray()).find((i) => i.kind === 'focus' && isApplicable(i, t.date))
       : undefined
-    const d = (await db.days.get(t.date)) ?? emptyDay(t.date)
+    const old = await db.days.get(t.date)
+    const d = old ? structuredClone(old) : emptyDay(t.date)
     d.focusMinutes += minutes
     if (focusItem) d.checks = { ...d.checks, [focusItem.id]: true }
+    stampDay(old, d)
     await db.days.put(d)
     await resetTimer()
   })

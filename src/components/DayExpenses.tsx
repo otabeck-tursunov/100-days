@@ -6,7 +6,7 @@ import { formatMoney } from '../lib/format'
 
 /** Kechki tahlilda: tanlangan kunning barcha sarflari + tez qo'shish. Moliya sahifasi bilan umumiy ma'lumot. */
 export function DayExpenses({ date }: { date: string }) {
-  const list = useLiveQuery(() => db.transactions.where('date').equals(date).toArray(), [date]) ?? []
+  const list = useLiveQuery(async () => (await db.transactions.where('date').equals(date).toArray()).filter((t) => !t.deleted), [date]) ?? []
   const expenses = list.filter((t) => t.type === 'expense')
   const total = expenses.reduce((a, t) => a + t.amount, 0)
 
@@ -16,7 +16,7 @@ export function DayExpenses({ date }: { date: string }) {
 
   // oldin ishlatilgan o'z toifalarimiz ham chiqsin
   const used = useLiveQuery(async () => {
-    const all = await db.transactions.toArray()
+    const all = (await db.transactions.toArray()).filter((t) => !t.deleted)
     return [...new Set(all.filter((t) => t.type === 'expense' && t.category).map((t) => t.category!))]
   }) ?? []
   const categories = [...new Set([...DEFAULT_CATEGORIES.expense, ...used])]
@@ -50,7 +50,7 @@ export function DayExpenses({ date }: { date: string }) {
             <button
               className="btn !min-h-9 !px-3"
               aria-label="O'chirish"
-              onClick={() => confirm("Sarf o'chirilsinmi?") && db.transactions.delete(t.id)}
+              onClick={() => confirm("Sarf o'chirilsinmi?") && db.transactions.update(t.id, { deleted: true })}
             >
               ✕
             </button>

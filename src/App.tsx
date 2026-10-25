@@ -3,6 +3,7 @@ import { AppDataProvider, useAppData } from './hooks/useAppData'
 import { useReminders } from './hooks/useReminders'
 import { useTimerWatcher } from './hooks/useTimer'
 import { applyTheme } from './lib/theme'
+import { startSync } from './sync/engine'
 import { TodayPage } from './pages/TodayPage'
 import { MapPage } from './pages/MapPage'
 import { StatsPage } from './pages/StatsPage'
@@ -30,6 +31,7 @@ function Shell() {
 
   useReminders(settings)
   useTimerWatcher()
+  useEffect(() => startSync(), [])
 
   useEffect(() => {
     applyTheme(settings.theme)

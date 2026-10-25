@@ -12,6 +12,7 @@ export type ItemKind =
 
 export interface Item {
   id: string
+  updatedAt?: number
   section: Section
   title: string
   order: number
@@ -24,6 +25,7 @@ export interface Item {
 
 export interface Settings {
   id: 'main'
+  updatedAt?: number
   startDate: string
   theme: ThemeMode
   focusMinutes: number
@@ -37,6 +39,9 @@ export interface Settings {
 
 export interface DayRecord {
   date: string
+  updatedAt?: number
+  /** Maydon bo'yicha oxirgi o'zgarish vaqti (sinxronlash uchun), masalan 'checks.m1' */
+  fieldAt?: Record<string, number>
   checks: Record<string, boolean>
   learned: string
   obstacle: string
@@ -59,6 +64,9 @@ export interface TimerState {
 /** Kirim (kuryerlikdan tashqari, odatda yirik) yoki xarajat */
 export interface Transaction {
   id: string
+  updatedAt?: number
+  /** Soft-delete: sinxronlash o'chirilganini boshqa qurilmalarga ham yetkazishi uchun */
+  deleted?: boolean
   date: string
   type: 'income' | 'expense'
   amount: number
@@ -70,6 +78,8 @@ export interface Transaction {
 /** Kutilayotgan to'lov: menga to'lanadi (receivable) yoki men to'lashim kerak (payable) */
 export interface Pending {
   id: string
+  updatedAt?: number
+  deleted?: boolean
   direction: 'receivable' | 'payable'
   amount: number
   who: string

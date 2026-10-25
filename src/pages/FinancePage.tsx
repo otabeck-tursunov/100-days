@@ -103,7 +103,7 @@ function TransactionForm({ today, txs }: { today: string; txs: Transaction[] }) 
 }
 
 function PendingSection({ today }: { today: string }) {
-  const list = useLiveQuery(() => db.pending.toArray()) ?? []
+  const list = useLiveQuery(async () => (await db.pending.toArray()).filter((p) => !p.deleted)) ?? []
   const [direction, setDirection] = useState<Pending['direction']>('receivable')
   const [amount, setAmount] = useState(0)
   const [who, setWho] = useState('')
@@ -171,7 +171,7 @@ function PendingSection({ today }: { today: string }) {
               <button className="btn !min-h-10" onClick={() => complete(p)}>
                 {p.direction === 'receivable' ? '✓ Olindi' : '✓ To\'landi'}
               </button>
-              <button className="btn !min-h-10 !px-3" aria-label="O'chirish" onClick={() => confirm('O\'chirilsinmi?') && db.pending.delete(p.id)}>🗑</button>
+              <button className="btn !min-h-10 !px-3" aria-label="O'chirish" onClick={() => confirm('O\'chirilsinmi?') && db.pending.update(p.id, { deleted: true })}>🗑</button>
             </li>
           )
         })}
@@ -271,8 +271,8 @@ export function FinancePage() {
   const { days, today } = useAppData()
   const [month, setMonth] = useState(today.slice(0, 7))
   const [filter, setFilter] = useState<{ type: Transaction['type']; name: string } | null>(null)
-  const txs = useLiveQuery(() => db.transactions.toArray()) ?? []
-  const pendingAll = useLiveQuery(() => db.pending.toArray()) ?? []
+  const txs = useLiveQuery(async () => (await db.transactions.toArray()).filter((t) => !t.deleted)) ?? []
+  const pendingAll = useLiveQuery(async () => (await db.pending.toArray()).filter((p) => !p.deleted)) ?? []
 
   // Hamyon: barcha vaqt bo'yicha kirim (kuryerlik bilan) − xarajat
   const wallet =
@@ -343,7 +343,7 @@ export function FinancePage() {
                     </div>
                     <div className="truncate text-xs text-muted">{formatLong(t.date)} · {t.category || FALLBACK_CATEGORY}{t.note ? ` · ${t.note}` : ''}</div>
                   </div>
-                  <button className="btn !min-h-10 !px-3" aria-label="O'chirish" onClick={() => confirm('Yozuv o\'chirilsinmi?') && db.transactions.delete(t.id)}>🗑</button>
+                  <button className="btn !min-h-10 !px-3" aria-label="O'chirish" onClick={() => confirm('Yozuv o\'chirilsinmi?') && db.transactions.update(t.id, { deleted: true })}>🗑</button>
                 </li>
               ))}
               {!visible.length && <li className="py-2 text-sm text-muted">Yozuv yo'q.</li>}
