@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { addItem, moveItem, removeItem, renameItem, updateSettings } from '../db/actions'
 import { exportBackup, importBackup, mergeFinance } from '../db/backup'
+import { importFromText } from '../db/linkImport'
 import type { Item, Section, ThemeMode } from '../db/types'
 import { DebouncedInput } from '../components/DebouncedInput'
 import { SyncSection } from '../components/SyncSection'
@@ -73,6 +74,7 @@ export function SettingsPage() {
   const mergeRef = useRef<HTMLInputElement>(null)
   const [perm, setPerm] = useState<string>(notificationsSupported() ? Notification.permission : 'unsupported')
   const [msg, setMsg] = useState('')
+  const [link, setLink] = useState('')
 
   const onImport = async (file?: File) => {
     if (!file) return
@@ -199,8 +201,16 @@ export function SettingsPage() {
           <input ref={mergeRef} type="file" accept="application/json,.json" hidden data-testid="merge-input" onChange={(e) => { void onMerge(e.target.files?.[0]); e.target.value = '' }} />
         </div>
         <p className="text-xs text-muted">“Fayldan tiklash” hamma narsani almashtiradi. “Moliya yozuvlarini qo'shish” esa mavjud ma'lumotni saqlab, faqat yangi kirim/xarajat va kutilayotgan to'lovlarni qo'shadi.</p>
+        <div>
+          <span className="label">Havola orqali qo'shish (kreditlar va qoldiq)</span>
+          <div className="flex flex-wrap gap-2">
+            <input className="input min-w-0 flex-1" placeholder="Havolani shu yerga joylang" value={link} onChange={(e) => setLink(e.target.value)} />
+            <button className="btn btn-primary" disabled={!link.trim()} onClick={async () => { setMsg(await importFromText(link)); setLink('') }}>Qo'shish</button>
+          </div>
+        </div>
         {msg && <p className="text-sm text-muted" role="status">{msg}</p>}
       </section>
+      <p className="pb-4 text-center text-xs text-muted">Versiya: {__BUILD__}</p>
     </div>
   )
 }

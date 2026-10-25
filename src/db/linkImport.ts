@@ -36,6 +36,19 @@ function expand(raw: any): { transactions: Transaction[]; pending: Pending[] } {
   return { transactions, pending }
 }
 
+/** Joylashtirilgan matndan (to'liq havola yoki faqat #import= dan keyingi qism) qo'shadi. */
+export async function importFromText(text: string): Promise<string> {
+  const m = text.trim().match(/import=([A-Za-z0-9_-]+)/) ?? text.trim().match(/^([A-Za-z0-9_-]{40,})$/)
+  if (!m) return "Havola topilmadi. U \"...#import=eyJ2...\" ko'rinishida bo'lishi kerak."
+  try {
+    const data = expand(decode(m[1]))
+    const added = await mergeFinanceData(data)
+    return added ? `${added} ta moliya yozuvi qo'shildi. Moliya sahifasini oching.` : "Yangi yozuv yo'q: hammasi allaqachon bor."
+  } catch (e) {
+    return `Importda xato: ${(e as Error).message}`
+  }
+}
+
 /** Havolada import bo'lsa, tasdiq so'rab qo'shadi va natija matnini qaytaradi; bo'lmasa null. */
 export async function importFromHash(): Promise<string | null> {
   const m = location.hash.match(/^#import=([A-Za-z0-9_-]+)$/)
